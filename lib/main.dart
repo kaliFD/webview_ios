@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:secure_application/secure_application.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
@@ -19,27 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: SecureApplication(
-        nativeRemoveDelay: 100,
-        onNeedUnlock: (secure) {
-          return null;
-        },
-        child: const SecureGate(
-          blurr: 20,
-          opacity: 0.8,
-          lockedBuilder: _lockedBuilder,
-          child: SplashScreen(),
-        ),
-      ),
-    );
-  }
-
-  static Widget _lockedBuilder(BuildContext context, SecureApplicationController? notifier) {
-    return const Center(
-      child: Text(
-        'Layar Diamankan',
-        style: TextStyle(color: Colors.white, fontSize: 20),
-      ),
+      home: const SplashScreen(),
     );
   }
 }
@@ -212,11 +192,6 @@ class _ExamPageState extends State<ExamPage> with WidgetsBindingObserver {
         ),
       )
       ..loadRequest(Uri.parse(_examUrl));
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final secureProvider = SecureApplicationProvider.of(context, listen: false);
-      secureProvider?.secure();
-    });
   }
 
   @override
