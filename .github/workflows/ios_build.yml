@@ -26,6 +26,9 @@ jobs:
       - name: Get Dependencies
         run: flutter pub get
 
+      - name: Generate Xcode Config (Simulator Bypass)
+        run: flutter build ios --config-only --simulator
+
       - name: Disable Code Signing in Xcode Project
         run: |
           # Strip all code signing settings from the Xcode project
@@ -34,12 +37,6 @@ jobs:
           sed -i '' '/DEVELOPMENT_TEAM/d' ios/Runner.xcodeproj/project.pbxproj
           sed -i '' '/DevelopmentTeam/d' ios/Runner.xcodeproj/project.pbxproj
           sed -i '' 's/"CODE_SIGN_IDENTITY\[sdk=iphoneos\*\]" = "iPhone Developer"/"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = ""/g' ios/Runner.xcodeproj/project.pbxproj
-
-      - name: Install CocoaPods
-        run: |
-          flutter precache --ios
-          cd ios
-          pod install
 
       - name: Build with Xcode (No Signing)
         run: |
