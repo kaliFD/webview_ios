@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -39,7 +39,7 @@ jobs:
           zip -r CBT_MA_2026_Unsigned.ipa Payload
 
       - name: Upload IPA Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: CBT_MA_2026_Unsigned_IPA
           path: CBT_MA_2026_Unsigned.ipa
