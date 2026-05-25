@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  static Widget _lockedBuilder(BuildContext context, SecureNotifier? notifier) {
+  static Widget _lockedBuilder(BuildContext context, SecureApplicationController? notifier) {
     return const Center(
       child: Text(
         'Layar Diamankan',
