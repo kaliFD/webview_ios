@@ -28,15 +28,17 @@ jobs:
 
       - name: Build iOS App (No Codesign)
         run: |
-          flutter build ios --release --no-codesign
+          # Build flutter assets (this might fail at Xcode phase due to no team)
+          flutter build ios --release --no-codesign || true
+          # Force build with Xcode and strictly ignore signing
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme Runner -configuration Release -sdk iphoneos CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
           
       - name: Package into IPA
         run: |
-          # Create a Payload directory
           mkdir -p Payload
           # Move the compiled Runner.app into the Payload folder
-          mv build/ios/iphoneos/Runner.app Payload/
-          # Zip the Payload folder into an .ipa file
+          mv ios/build/Release-iphoneos/Runner.app Payload/
           zip -r CBT_MA_2026_Unsigned.ipa Payload
 
       - name: Upload IPA Artifact
