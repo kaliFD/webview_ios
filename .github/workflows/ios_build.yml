@@ -1,4 +1,4 @@
-﻿name: Build iOS (Unsigned IPA)
+name: Build iOS (Unsigned IPA)
 
 on:
   push:
@@ -50,15 +50,21 @@ jobs:
             end
           end
           EOF
+          
+          # 4. Re-run pod install to apply the new rules
+          cd ios
+          pod install
 
-      - name: Build iOS App (No Codesign)
-        run: flutter build ios --release --no-codesign
+      - name: Build iOS App with Xcode directly
+        run: |
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme Runner -configuration Release -sdk iphoneos CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
           
       - name: Package into IPA
         run: |
           mkdir -p Payload
           # Move the compiled Runner.app into the Payload folder
-          mv build/ios/iphoneos/Runner.app Payload/
+          mv ios/build/Release-iphoneos/Runner.app Payload/
           zip -r CBT_MA_2026_Unsigned.ipa Payload
 
       - name: Upload IPA Artifact
