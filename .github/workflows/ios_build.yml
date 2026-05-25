@@ -47,16 +47,16 @@ jobs:
           
           # Generate the certificate
           openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 365 -nodes -config ext.cnf
-          openssl pkcs12 -export -out cert.p12 -inkey key.pem -in cert.pem -password pass:
+          openssl pkcs12 -export -out cert.p12 -inkey key.pem -in cert.pem -password pass:test
           
           # Create and configure keychain
-          security create-keychain -p "" build.keychain
+          security create-keychain -p "test" build.keychain
           security default-keychain -s build.keychain
-          security unlock-keychain -p "" build.keychain
+          security unlock-keychain -p "test" build.keychain
           
           # Import the fake certificate into the keychain
-          security import cert.p12 -k build.keychain -P "" -T /usr/bin/codesign
-          security set-key-partition-list -S apple-tool:,apple: -s -k "" build.keychain
+          security import cert.p12 -k build.keychain -P "test" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "test" build.keychain
           
           # Verify that it shows up in codesigning identities!
           security find-identity -p codesigning -v
