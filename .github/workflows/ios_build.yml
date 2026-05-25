@@ -37,6 +37,7 @@ jobs:
 
       - name: Install CocoaPods
         run: |
+          flutter precache --ios
           cd ios
           pod install
 
